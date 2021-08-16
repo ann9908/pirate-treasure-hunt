@@ -4,10 +4,8 @@ var END = 0;
 var gameState = 1;
 
 var canvas;
-var pirate, nonPirate;
+var pirate, 
 var coin, bomb;
-var sword;
-var restart;
 var system,code,security;
 
 
@@ -21,7 +19,6 @@ function preload() {
   pPirate_img = loadImage("images/Player Pirate img.png");
   treasure_img = loadImage("images/TREASURE.png");
   gameOverImage = loadImage("images/game over.png")
-  restartImg = loadImage("images/restart.png");
 }
 
 function setup() {
@@ -34,10 +31,7 @@ function setup() {
   pirate.addImage(pPirate_img);
   pirate.scale = 0.5
 
-  restart = createSprite(300, 100)
-  restart.addImage(restartImg);
-
-  restart.visible = false;
+  
 
   score = 0;
   coinGroup = createGroup();
@@ -59,7 +53,7 @@ function draw() {
     fill("red");
     text("please answer these questions to begin the game",650,55)
 text("*INSTRUCTIONS*",1020,100)
-text(".You can move the pirate with arrow keys",1020,130)
+text(".You can move the pirate with the mouse",1020,130)
 text(".Touch the coins so you can gain points",1020,160)
 text(".Make sure you don't touch the bombs,",1020,190)
 text("or else you will lose",1020,220)
@@ -72,28 +66,8 @@ text("- Hope you enjoy playing the game.",1020,250)
 
   if (gameState === PLAY) {
 
-    {
-      pirate.pause("nokeypressed");
-      pirate.velocityX = 0;
-      pirate.velocityY = 0;
-    }
-
-    if (keyDown(UP_ARROW)) {
-      pirate.velocityX = 0;
-      pirate.velocityY = -5;
-    }
-    if (keyDown(DOWN_ARROW)) {
-      pirate.velocityX = 0;
-      pirate.velocityY = 5;
-    }
-    if (keyDown(LEFT_ARROW)) {
-      pirate.velocityX = -5;
-      pirate.velocityY = 0;
-    }
-    if (keyDown(RIGHT_ARROW)) {
-      pirate.velocityX = 5;
-      pirate.velocityY = 0;
-    }
+   pirate.x = World.mouseX;
+   pirate.y = World.mouseY;
 
     bombs();
     coins();
@@ -126,7 +100,7 @@ text("- Hope you enjoy playing the game.",1020,250)
 
 
 
-    restart.visible = true;
+    
 
     coinGroup.destroyEach();
     bombGroup.destroyEach();
@@ -138,12 +112,9 @@ text("- Hope you enjoy playing the game.",1020,250)
     pirate.x = 550;
     pirate.y = 400;
     pirate.velocity = 0;
-    console.log(gameState)
-    if (mousePressedOver(restart)) {
-      console.log("Pressed")
-      reset();
-    }
-
+    
+  
+    
   }
 
 
@@ -207,18 +178,3 @@ function coins() {
   }
 }
 
-function reset() {
-  console.log("reset")
-  gameState = SERVE;
-
-  restart.visible = false;
-
-  coinsGroup.destroyEach();
-  bombsGroup.destroyEach();
-
-  pirate.addImage(pPirate_img);
-
-
-
-  score = 0;
-}
